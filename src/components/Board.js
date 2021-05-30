@@ -23,9 +23,9 @@ var height = 1340
 
 function Map() {
   const terminals = useSelector(state => state.nodes.terminals)
-  const links = useSelector(state => state.nodes.links)
+  const lines = useSelector(state => state.nodes.lines)
   const jumpers = useSelector(state => state.nodes.jumpers)
-  const connectionType = useSelector(state => state.nodes.connectionType)
+  const wireType = useSelector(state => state.nodes.wireType)
   const output = useSelector(state => state.nodes.output)
   const dispatch = useDispatch();
   const disabledOpacity = "50%";
@@ -66,15 +66,15 @@ function Map() {
           viewBox={`0 0 ${width} ${height}`}
           preserveAspectRatio="xMidYMid meet"
         >
-          {links.map((link, i) => (
+          {lines.map((line, i) => (
             <line
               key={i}
-              x1={xScale(terminals[link.from].x)}
-              x2={xScale(terminals[link.to].x)}
-              y1={yScale(terminals[link.from].y)}
-              y2={yScale(terminals[link.to].y)}
+              x1={xScale(terminals[line.from].x)}
+              x2={xScale(terminals[line.to].x)}
+              y1={yScale(terminals[line.from].y)}
+              y2={yScale(terminals[line.to].y)}
               strokeWidth={5}
-              stroke={link.type === 'B' ? "blue" : link.type === 'M' ? "red": "black"}
+              stroke={line.type === 'B' ? "blue" : line.type === 'M' ? "red": "black"}
               onClick={() => dispatch(selectLine(i))}
             />
           ))}
@@ -85,7 +85,7 @@ function Map() {
               cx={xScale(terminal.x)}
               cy={yScale(terminal.y)}
               r="8"
-              id={terminal.id}
+              id={terminal.index}
               isSelected={true}
               action={selectNode}
               //opacity={node.isSelected ? "100%" : "0%"}
@@ -145,7 +145,7 @@ function Map() {
             width="160" 
             height="194" 
             rx="25"
-            opacity={connectionType === "B" ? "0%" : disabledOpacity}
+            opacity={wireType === "B" ? "0%" : disabledOpacity}
             onClick={() => dispatch(selectConnectionType("B"))}
           />
           <rect
@@ -154,7 +154,7 @@ function Map() {
             width="160" 
             height="191" 
             rx="25"
-            opacity={connectionType === "J" ? "0%" : disabledOpacity}
+            opacity={wireType === "J" ? "0%" : disabledOpacity}
             onClick={() => dispatch(selectConnectionType("J"))}
           />
           <rect
@@ -163,7 +163,7 @@ function Map() {
             width="247" 
             height="422" 
             rx="7"
-            opacity={connectionType === "M" ? "0%" : disabledOpacity}
+            opacity={wireType === "M" ? "0%" : disabledOpacity}
             onClick={() => dispatch(selectConnectionType("M"))}
           />
           <rect
