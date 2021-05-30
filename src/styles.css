@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+}
+
+.App {
+  font-family: sans-serif;
+  grid-template-columns: 1fr 2fr;
+}
+
+.inputs_container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.grid {
+  display: grid;
+}
+
+#left-panel {
+  grid-template-rows: 1fr 1fr;
+}
+
+
+circle:hover {
+  cursor: pointer;
+}
+
+line:hover {
+  cursor: not-allowed;
+  /*cursor: url("./images/bin.png"), auto;*/
+}
+
+.css-g1d714-ValueContainer {
+  height: 47px;
+  font-size: 24px;
+}
+
+.css-26l3qy-menu {
+  font-size: 24px; 
+}

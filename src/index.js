@@ -1,17 +1,33 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import {createStore} from 'redux';
 
+import "./styles.css";
+import Map from "./components/Board"
+import allReducers from "./reducers";
+import { Provider } from 'react-redux';
+import PowerToggle from "./components/Power";
+
+const store = createStore(
+  allReducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
+
+//var links = [{ s: 0, d: 1 }, { s: 1, d: 2 }, { s: 2, d: 3 }, { s: 3, d: 4 }];
+
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <Map width={666} height={1340} />
+      </div>
+    );
+  }
+}
+
+const rootElement = document.getElementById("root");
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  </Provider>, 
+rootElement);
