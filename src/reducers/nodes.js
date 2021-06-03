@@ -4,7 +4,8 @@ import {
   SELECT_LINE,
   SELECT_EXERCISE,
   JUMPER_TOGGLE,
-  SELECT_METER_TYPE
+  SELECT_METER_TYPE,
+  DOWNLOAD_GRAPH
 } from '../constants/action-types.js'
 
 const initialState = {
@@ -112,8 +113,6 @@ const initialState = {
     {x: -5, y: 8.5, index: 69, isSelected: false},
     {x: 4, y: 8.5, index: 70, isSelected: false},
     {x: 13, y: 8.5, index: 71, isSelected: false},
-
-    // jumpers
   ],
   lines: [],
   jumpers: [
@@ -124,6 +123,12 @@ const initialState = {
     {x: 204, y: 50.6, index: 4, isSelected: true},
     {x: 170, y: 38.7, index: 5, isSelected: true}
   ],
+  meters: [
+    {x: -119.56, y: 95.6, index: 0, isSelected: true},
+    {x: -99.78, y: 95.6, index: 0, isSelected: true},
+  ],
+  oscilloscipes: [69, 70, 71], // change this base of oscilloscipes in terminals
+  oscilloscipeConnections: [],
   exercises: {
     "1.1": {
       links: [[63, 64], [64, 65]],
@@ -132,7 +137,7 @@ const initialState = {
       current: [],
       jumper: null,
       shouldTestSequence: false,
-      ground: []
+      ground: [4, 13]
     },
     "1.2": {
       links: [[63, 66], [64, 67], [65, 68]],
@@ -150,7 +155,8 @@ const initialState = {
       current: [],
       jumper: null,
       shouldTestSequence: false,
-      ground: []
+      ground: [4, 13],
+      oscilloscipes: [[1, 69], [2, 71], [4, 70]]
     },
     "1.4": {
       links: [[63, 64], [64, 65], [1, 5], [2, 6], [3, 7]],
@@ -159,12 +165,13 @@ const initialState = {
       current: [],
       jumper: null,
       shouldTestSequence: true,
-      ground: []
+      ground: [4, 13],
+      oscilloscipes: [[1, 69], [2, 71], [4, 70]]
     },
     "2.1": {
       links: [[63, 64], [64, 65], [1, 8], [2, 18], [3, 19], [9, 39], [10, 43], [16, 47], [17, 51], [20, 59], [21, 55]],
-      dmm: [[1, 2], [2, 3], [3, 1], [2, 1], [3, 2], [1, 4], [1, 4], [2, 4], [3, 4], [4, 1], [4, 2], [4, 3]],
-      voltage: [24, 24, 24, -24, -24, -24, 13.8564, 13.8564, 13.8564, -13.8564, -13.8564, -13.8564],
+      dmm: [[1, 2], [2, 3], [3, 1], [2, 1], [3, 2], [1, 3], [1, 4], [1, 4], [2, 4], [3, 4], [4, 1], [4, 2], [4, 3]],
+      voltage: [24, 24, 24, 24, 24, 24, 13.8564, 13.8564, 13.8564, 13.8564, 13.8564, 13.8564],
       current: [],
       jumper: null,
       shouldTestSequence: false,
@@ -268,11 +275,27 @@ const nodesReducer = (state = initialState, action) => {
       let dmm = [...state.dmm]
       let links = [...state.links]
       let lines = [...state.lines]
+      let wireType = state.wireType
+      let oscilloscipeConnections = [...state.oscilloscipeConnections]
+
+      if (state.oscilloscipeConnections.includes(action.payload)) {
+        return {...state}
+      }
+
+      if (state.oscilloscipes.includes(action.payload) && !state.oscilloscipeConnections.includes(action.payload)) {
+        wireType = link.type = "O"
+        oscilloscipeConnections.push(action.payload)
+      } else {
+        wireType = "B"
+      }
 
       if (link.from === action.payload) {
         link.from = null
       } else {
         if (state.isLinkStarted) {
+          if (state.oscilloscipeConnections.includes(action.payload)) {
+            return {...state}
+          }
           if (link.from > action.payload && link.type !== "M") {
             link.to = link.from
             link.from = action.payload
@@ -280,28 +303,29 @@ const nodesReducer = (state = initialState, action) => {
             link.to = action.payload
           }
 
-          if (state.wireType !== "M") {
+          if (wireType !== "M") {
             links = [...state.links, [link.from, link.to]]
           }
 
-          if (state.dmm.length === 0 && state.wireType === "M") {
+          if (state.dmm.length === 0 && wireType === "M") {
             lines.push(link)
             dmm = [link.from, link.to]
-          } else if(state.wireType !== "M") {
+          } else if(wireType !== "M") {
             lines.push(link)
           }
 
           return {
             ...state,
             lines: lines,
-            link: {from: null, to: null, type: state.wireType},
+            link: {from: null, to: null, type: wireType},
             isLinkStarted: !state.isLinkStarted,
             dmm: dmm,
-            links: links
+            links: links,
+            oscilloscipeConnections: oscilloscipeConnections
           }
         } else{
           link.from = action.payload
-          link.type = state.wireType
+          link.type = wireType
         }
       }
 
@@ -309,16 +333,28 @@ const nodesReducer = (state = initialState, action) => {
         ...state,
         link: link,
         isLinkStarted: !state.isLinkStarted,
-        dmm: dmm
+        dmm: dmm,
+        oscilloscipeConnections: oscilloscipeConnections
       }
     case SELECT_LINE:
       const splicedLines = state.lines.splice(action.payload, 1)
       const splicedLine = splicedLines[0]
       let dmmLine = [...state.dmm]
       let splicedLineIndex = null
+      let oscilloscipeConnectionsLines = [...state.oscilloscipeConnections]
       if (splicedLine.type === "M") {
         dmmLine = []
       } else {
+        if (splicedLine.type === "O") {
+          let fromIndex = state.oscilloscipeConnections.indexOf(splicedLine.from)
+          let toIndex = state.oscilloscipeConnections.indexOf(splicedLine.to)
+          if (fromIndex !== -1) {
+            oscilloscipeConnectionsLines.splice(fromIndex, 1)
+          }
+          if (toIndex !== -1) {
+            oscilloscipeConnectionsLines.splice(toIndex, 1)
+          }
+        }
         splicedLineIndex = state.links.map(String).indexOf([splicedLine.from, splicedLine.to].toString())
         state.links.splice(splicedLineIndex, 1)
       }
@@ -326,7 +362,8 @@ const nodesReducer = (state = initialState, action) => {
         ...state,
         lines: [...state.lines],
         links: [...state.links],
-        dmm: dmmLine
+        dmm: dmmLine,
+        oscilloscipeConnections: oscilloscipeConnectionsLines
       }
     case SELECT_CONNECTION_TYPE:
       return {
@@ -372,7 +409,8 @@ const Voltage = (state) => {
   let diff = links.filter(link => !exerciseLinks.includes(link)).concat(exerciseLinks.filter(link => !links.includes(link)))
   let error = "Error"
   let voltage = null
-  if (diff.length === 0) {
+  console.log(diff)
+  if (diff.length === 0 || (diff.length === 1 && diff.includes(exercise.ground.toString()))) {
     voltage = exercise.voltage[dmm.indexOf(state.dmm.toString(0))]
     return voltage ? voltage : error
   }

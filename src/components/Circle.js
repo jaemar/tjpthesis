@@ -8,7 +8,8 @@ function Circle(props) {
     cy,
     id,
     isSelected,
-    action
+    action,
+    r
   } = props
   const dispatch = useDispatch();
 
@@ -17,7 +18,7 @@ function Circle(props) {
       id={id}
       cx={cx}
       cy={cy}
-      r="7"
+      r={r}
       fill={isSelected ? "#fff" : "#000"}
       stroke="#fff"
       strokeWidth="2"

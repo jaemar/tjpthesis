@@ -25,6 +25,7 @@ function Map() {
   const terminals = useSelector(state => state.nodes.terminals)
   const lines = useSelector(state => state.nodes.lines)
   const jumpers = useSelector(state => state.nodes.jumpers)
+  const meters = useSelector(state => state.nodes.meters)
   const wireType = useSelector(state => state.nodes.wireType)
   const output = useSelector(state => state.nodes.output)
   const dispatch = useDispatch();
@@ -84,11 +85,10 @@ function Map() {
               nodeId={terminal.index}
               cx={xScale(terminal.x)}
               cy={yScale(terminal.y)}
-              r="8"
+              r="7"
               id={terminal.index}
               isSelected={true}
               action={selectNode}
-              //opacity={node.isSelected ? "100%" : "0%"}
             />
           ))}
           {jumpers.map((jumper, i) => (
@@ -97,11 +97,22 @@ function Map() {
               nodeId={jumper.index}
               cx={xScale(jumper.x)}
               cy={yScale(jumper.y)}
-              r="8"
+              r="7"
               id={jumper.id}
               isSelected={jumper.isSelected}
               action={jumperToggle}
-              //opacity={node.isSelected ? "100%" : "0%"}
+            />
+          ))}
+          {meters.map((meter, i) => (
+            <Circle
+              key={i}
+              nodeId={meter.index}
+              cx={xScale(meter.x)}
+              cy={yScale(meter.y)}
+              r="15"
+              id={meter.id}
+              isSelected={false}
+              action={jumperToggle}
             />
           ))}
           <foreignObject 

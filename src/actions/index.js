@@ -5,7 +5,8 @@ import {
   POWER_TOGGLE,
   SELECT_METER_TYPE,
   SELECT_EXERCISE,
-  JUMPER_TOGGLE
+  JUMPER_TOGGLE,
+  DOWNLOAD_GRAPH
 } from '../constants/action-types.js'
 
 export const selectNode = (nodeId) => {
@@ -54,5 +55,11 @@ export const selectExercise = (exercise) => {
   return {
     type: SELECT_EXERCISE,
     payload: exercise
+  }
+}
+
+export const downloadGraph = () => {
+  return {
+    type: DOWNLOAD_GRAPH
   }
 }
