@@ -6,7 +6,9 @@ import {
   SELECT_METER_TYPE,
   SELECT_EXERCISE,
   JUMPER_TOGGLE,
-  DOWNLOAD_GRAPH
+  DOWNLOAD_GRAPH,
+  OPEN_OSCILLOSCOPE,
+  CLOSE_OSCILLOSCOPE
 } from '../constants/action-types.js'
 
 export const selectNode = (nodeId) => {
@@ -61,5 +63,17 @@ export const selectExercise = (exercise) => {
 export const downloadGraph = () => {
   return {
     type: DOWNLOAD_GRAPH
+  }
+}
+
+export const openOscilloscope = () => {
+  return {
+    type: OPEN_OSCILLOSCOPE
+  }
+}
+
+export const closeOscilloscope = () => {
+  return {
+    type: CLOSE_OSCILLOSCOPE
   }
 }

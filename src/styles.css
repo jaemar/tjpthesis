@@ -24,7 +24,7 @@ body {
 }
 
 
-circle:hover {
+circle:hover, rect:hover {
   cursor: pointer;
 }
 
@@ -40,4 +40,27 @@ line:hover {
 
 .css-26l3qy-menu {
   font-size: 24px; 
+}
+
+#popup-root .popup-content {
+  background-color: #292d3e;
+  color: #fff;
+  border: 1px solid #464545;
+}
+
+.popup-content .close {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  right: -10px;
+  top: -10px;
+  font-size: 24px;
+  border-radius: 18px;
+  border: 1px solid #cfcece;
+  background-color: #fff;
+}
+
+.popup-content img {
+  width: 100%;
 }
