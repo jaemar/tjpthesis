@@ -11,7 +11,8 @@ function SelectOption() {
       options: [
         { label: "Exercise #1: Start connection of three phase power source", value: "1.1" },
         { label: "Exercise #2: Delta connection of three phase power source", value: "1.2" },
-        { label: "Exercise #3: Phase sequence in the generator", value: "1.3" },
+        { label: "Exercise #3: Measuring the phase angle between the phases", value: "1.3" },
+        { label: "Exercise #4: Phase sequence", value: "1.4" },
       ]
     },
     {
@@ -46,6 +47,7 @@ function SelectOption() {
       options={options}
       onChange={(e) => dispatch(selectExercise(e.value))}
       defaultValue={options[0]}
+      //defaultMenuIsOpen={true}
     />
   )
 }

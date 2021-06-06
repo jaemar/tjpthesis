@@ -3,12 +3,14 @@ import {
   SELECT_LINE, 
   SELECT_CONNECTION_TYPE,
   POWER_TOGGLE,
+  SWITCH_TOGGLE,
   SELECT_METER_TYPE,
   SELECT_EXERCISE,
   JUMPER_TOGGLE,
   DOWNLOAD_GRAPH,
   OPEN_OSCILLOSCOPE,
-  CLOSE_OSCILLOSCOPE
+  CLOSE_OSCILLOSCOPE,
+  SCREEN_CAPTURE
 } from '../constants/action-types.js'
 
 export const selectNode = (nodeId) => {
@@ -46,6 +48,13 @@ export const powerToggle = (status) => {
   }
 }
 
+export const switchToggle = (status) => {
+  return {
+    type: SWITCH_TOGGLE,
+    payload: status
+  }
+}
+
 export const selectMeterType = (meterType) => {
   return {
     type: SELECT_METER_TYPE,
@@ -75,5 +84,12 @@ export const openOscilloscope = () => {
 export const closeOscilloscope = () => {
   return {
     type: CLOSE_OSCILLOSCOPE
+  }
+}
+
+export const captureScreen = (screenCapture) => {
+  return {
+    type: SCREEN_CAPTURE,
+    payload: screenCapture
   }
 }

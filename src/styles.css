@@ -40,6 +40,11 @@ line:hover {
 
 .css-26l3qy-menu {
   font-size: 24px; 
+  /*height: 47px;*/
+}
+
+.css-4ljt47-MenuList {
+  height: 190px;
 }
 
 #popup-root .popup-content {
