@@ -306,10 +306,10 @@ function Map() {
               <a href={faqPdf} download style={linkStyle}> </a>
             </foreignObject>
             <foreignObject 
-              x={xScale(-106)}
+              x={xScale(-105.5)}
               y={yScale(47.3)}
-              height="160"
-              width="750">
+              height="187"
+              width="156">
               <a href={helpPdf} download style={linkStyle}> </a>
             </foreignObject>
             <foreignObject 
