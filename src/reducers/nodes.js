@@ -120,12 +120,12 @@ const initialState = {
   ],
   lines: [],
   jumpers: [
-    {x: 127.6, y: 35, index: 0, isSelected: true},
-    {x: 129, y: 46.5, index: 1, isSelected: true},
-    {x: 108, y: 41, index: 2, isSelected: true},
-    {x: 207, y: 30.3, index: 3, isSelected: true},
-    {x: 204, y: 50.6, index: 4, isSelected: true},
-    {x: 170, y: 38.7, index: 5, isSelected: true}
+    {x: 127.6, y: 35, index: 0, isSelected: false},
+    {x: 129, y: 46.5, index: 1, isSelected: false},
+    {x: 108, y: 41, index: 2, isSelected: false},
+    {x: 207, y: 30.3, index: 3, isSelected: false},
+    {x: 204, y: 50.6, index: 4, isSelected: false},
+    {x: 170, y: 38.7, index: 5, isSelected: false}
   ],
   meters: [
     {x: -119.56, y: 95.6, index: 0, isSelected: true},
@@ -139,8 +139,10 @@ const initialState = {
       links: [[63, 64], [64, 65]],
       dmm: [[1, 2], [2, 3], [3, 1], [2, 1], [3, 2], [1, 3], [1, 4], [2, 4], [3, 4], [4, 1], [4, 2], [4, 3]],
       voltage: [24, 24, 24, -24, -24, -24, 13.8564, 13.8564, 13.8564, -13.8564, -13.8564, -13.8564],
+      jumpersVoltage: [],
+      currentDmm: [],
       current: [],
-      jumper: null,
+      jumpers: null,
       shouldTestSequence: false,
       ground: [4, 13],
       oscilloscopes: [],
@@ -150,8 +152,10 @@ const initialState = {
       links: [[63, 66], [64, 67], [65, 68]],
       dmm: [[1, 2], [2, 3], [3, 1], [2, 1], [3, 2], [1, 3]],
       voltage: [24, 24, 24, -24, -24, -24],
+      jumpersVoltage: [],
+      currentDmm: [],
       current: [],
-      jumper: null,
+      jumpers: null,
       shouldTestSequence: false,
       ground: [],
       oscilloscopes: [],
@@ -161,19 +165,23 @@ const initialState = {
       links: [[63, 64], [64, 65]],
       dmm: [],
       voltage: [],
+      jumpersVoltage: [],
+      currentDmm: [],
       current: [],
-      jumper: null,
+      jumpers: null,
       shouldTestSequence: false,
       ground: [4, 13],
       oscilloscopes: [[[1, 69], [2, 71], [4, 70]], [[2, 69], [3, 71], [4, 70]], [[3, 69], [1, 71], [4, 70]]],
       oscilloscopesValues: ["13a", "13b", "13c"]
-    },
+      , },
     "1.4": {
       links: [[63, 64], [64, 65], [1, 5], [2, 6], [3, 7]],
       dmm: [],
       voltage: [],
+      jumpersVoltage: [],
+      currentDmm: [],
       current: [],
-      jumper: null,
+      jumpers: null,
       shouldTestSequence: true,
       ground: [4, 13],
       oscilloscopes: [[[1, 69], [4, 70]], [[2, 69], [4, 70]], [[3, 69], [4, 70]], [[1, 69], [2, 71], [4, 70]]],
@@ -181,10 +189,12 @@ const initialState = {
     },
     "2.1": {
       links: [[63, 64], [64, 65], [1, 8], [2, 18], [3, 19], [9, 39], [10, 43], [16, 47], [17, 51], [20, 59], [21, 55]],
-      dmm: [[1, 2], [2, 3], [3, 1], [2, 1], [3, 2], [1, 3], [1, 4], [1, 4], [2, 4], [3, 4], [4, 1], [4, 2], [4, 3]],
-      voltage: [24, 24, 24, 24, 24, 24, 13.8564, 13.8564, 13.8564, 13.8564, 13.8564, 13.8564],
-      current: [],
-      jumper: null,
+      dmm: [[1, 2], [2, 3], [3, 1], [2, 1], [3, 2], [1, 3], [1, 4], [2, 4], [3, 4], [4, 1], [4, 2], [4, 3]],
+      voltage: [24, 24, 24, -24, -24, -24, 13.8564, 13.8564, 13.8564, -13.8564, -13.8564, -13.8564],
+      jumpersVoltage: [[0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2]],
+      currentDmm: [[1, 8], [2, 18], [3, 19], [11, 12], [15, 14], [22, 23], [8, 1], [18, 2], [19, 3], [12, 11], [14, 15], [23, 22]],
+      current: [0.05543, 0.05543, 0.05543, 0.05543, 0.05543, 0.05543, -0.05543, -0.05543, -0.05543, -0.05543, -0.05543, -0.05543],
+      jumpersCurrent: [[0, 1, 2], [0, 1, 2], [0, 1, 2], [1, 2], [0, 2], [0, 1], [0, 1, 2], [0, 1, 2], [0, 1, 2], [1, 2], [0, 2], [0, 1]],
       shouldTestSequence: false,
       ground: [4, 13],
       oscilloscopes: [],
@@ -194,8 +204,10 @@ const initialState = {
       links: [[63, 64], [64, 65], [1, 24], [2, 29], [3, 34], [27, 39], [40, 43], [28, 44], [32, 52], [48, 51], [33, 47], [38, 60], [56, 59], [37, 55]],
       dmm: [[1, 2], [2, 3], [3, 1], [2, 1], [3, 2], [1, 3]],
       voltage: [24, 24, 24, -24, -24, -24],
-      current: [],
-      jumper: null,
+      jumpersVoltage: [[3, 4, 5], [3, 4, 5], [3, 4, 5], [3, 4, 5], [3, 4, 5], [3, 4, 5]],
+      currentDmm: [[1, 24], [2, 29], [3, 34], [25, 26], [30, 31], [36, 35], [24, 1], [29, 2], [34, 3], [26, 25], [31, 30], [35,36]],
+      current: [0.08313, 0.08313, 0.08313, 0.08313, 0.08313, 0.08313, -0.08313, -0.08313, -0.08313, -0.08313, -0.08313, -0.08313],
+      jumpersCurrent: [[3, 4, 5], [3, 4, 5], [3, 4, 5], [4, 5], [3, 5], [3, 4], [3, 4, 5], [3, 4, 5], [3, 4, 5], [4, 5], [3, 5], [3, 4]],
       shouldTestSequence: false,
       ground: [],
       oscilloscopes: [],
@@ -203,10 +215,12 @@ const initialState = {
     },
     "2.3": {
       links: [[63, 66], [64, 67], [65, 68], [1, 8], [2, 18], [3, 19], [9, 39], [10, 43], [16, 47], [17, 51], [20, 59], [21, 55]],
-      dmm: [[1, 8], [2, 18], [3, 19]],
+      dmm: [],
       voltage: [],
-      current: [],
-      jumper: null,
+      jumpersVoltage: [],
+      currentDmm: [[1, 8], [2, 18], [3, 19], [11, 12], [15, 14], [22, 23], [8, 1], [18, 2], [19, 3], [12, 11], [14, 15], [23, 22]],
+      current: [0.05543, 0.05543, 0.05543, 0.05543, 0.05543, 0.05543, -0.05543, -0.05543, -0.05543, -0.05543, -0.05543, -0.05543],
+      jumpersCurrent: [[0, 1, 2], [0, 1, 2], [0, 1, 2], [1, 2], [0, 2], [0, 1], [0, 1, 2], [0, 1, 2], [0, 1, 2], [1, 2], [0, 2], [0, 1]],
       shouldTestSequence: false,
       ground: [],
       oscilloscopes: [],
@@ -216,8 +230,10 @@ const initialState = {
       links: [[63, 66], [64, 67], [65, 68], [1, 24], [2, 29], [3, 34], [27, 39], [28, 43], [32, 51], [33, 47], [37, 55], [38, 59]],
       dmm: [],
       voltage: [],
-      current: [],
-      jumper: null,
+      jumpersVoltage: [],
+      currentDmm: [[1, 24], [2, 29], [3, 34], [25, 26], [30, 31], [36, 35], [24, 1], [29, 2], [34, 3], [26, 25], [31, 30], [35,36]],
+      current: [0.05543, 0.05543, 0.05543, 0.096, 0.096, 0.096, -0.05543, -0.05543, -0.05543, -0.096, -0.096, -0.096],
+      jumpersCurrent: [[3, 4, 5], [3, 4, 5], [3, 4, 5], [4, 5], [3, 5], [3, 4], [3, 4, 5], [3, 4, 5], [3, 4, 5], [4, 5], [3, 5], [3, 4]],
       shouldTestSequence: false,
       ground: [],
       oscilloscopes: [],
@@ -227,18 +243,11 @@ const initialState = {
       links: [[63, 64], [64, 65], [1, 8], [2, 18], [3, 19], [9, 39], [10, 43], [16, 40], [44, 47], [17, 51], [20, 60], [56, 59], [52, 55], [21, 48]],
       dmm: [],
       voltage: [],
-      current: [],
-      jumper: null,
-      ground: [4, 13],
-      oscilloscopes: [],
-      oscilloscopesValues: []
-    },
-    "3.2": {
-      links: [[63, 64], [64, 65], [1, 8], [2, 18], [3, 19], [9, 39], [10, 43], [16, 47], [17, 51], [20, 59], [21, 55], [1, 56], [4, 60]],
-      dmm: [],
-      voltage: [],
-      current: [],
-      jumper: null,
+      jumpersVoltage: [],
+      currentDmm: [[1, 8], [2, 18], [3, 19], [11, 12], [15, 14], [22, 23], [8, 1], [18, 2], [19, 3], [12, 11], [14, 15], [23, 22], [4, 13], [13, 4]],
+      current: [0.05543, 0.02771, 0.0185, 0.05543, 0.02771, 0.0185, -0.05543, -0.02771, -0.0185, -0.05543, -0.02771, -0.0185, 0.00924, 0.00924],
+      jumpersCurrent: [[0, 1, 2], [0, 1, 2], [0, 1, 2], [1, 2], [0, 2], [0, 1], [0, 1, 2], [0, 1, 2], [0, 1, 2], [1, 2], [0, 2], [0, 1], [0, 1, 2], [0, 1, 2]],
+      shouldTestSequence: false,
       ground: [4, 13],
       oscilloscopes: [],
       oscilloscopesValues: []
@@ -247,8 +256,12 @@ const initialState = {
       links: [[63, 64], [64, 65], [1, 8], [2, 18], [3, 19], [9, 41], [10, 45], [16, 49], [17, 53], [20, 61], [21, 57]],
       dmm: [],
       voltage: [],
+      jumpersVoltage: [],
+      currentDmm: [],
       current: [],
       jumper: null,
+      jumpers: [],
+      shouldTestSequence: false,
       ground: [4, 13],
       oscilloscopes: [[[8, 69], [13, 70], [12, 71]], [[18, 69], [13, 70], [14, 71]], [[19, 69], [13, 70], [23, 71]]],
       oscilloscopesValues: ["41a", "41b", "41c"]
@@ -257,33 +270,43 @@ const initialState = {
       links: [[63, 64], [64, 65], [1, 8], [2, 18], [3, 19], [9, 42], [10, 46], [16, 50], [17, 54], [20, 62], [21, 58]],
       dmm: [],
       voltage: [],
+      jumpersVoltage: [],
+      currentDmm: [],
       current: [],
       jumper: null,
+      jumpers: [],
       shouldTestSequence: false,
-      ground: [],
-      oscilloscopes: [],
-      oscilloscopesValues: []
+      ground: [4, 13],
+      oscilloscopes: [[[8, 69], [13, 70], [12, 71]], [[18, 69], [13, 70], [14, 71]], [[19, 69], [13, 70], [23, 71]]],
+      oscilloscopesValues: ["42a", "42b", "42c"]
     },
     "4.3": {
       links: [[63, 64], [64, 65], [1, 8], [2, 18], [3, 19], [9, 40], [41, 44], [42, 45], [10, 46], [16, 48], [49, 52], [50, 53], [17, 54], [20, 56], [57, 60], [58, 61], [21, 62]],
       dmm: [],
       voltage: [],
+      jumpersVoltage: [],
+      currentDmm: [],
       current: [],
       jumper: null,
+      jumpers: [],
+      shouldTestSequence: false,
       ground: [4, 13],
-      oscilloscopes: [],
-      oscilloscopesValues: []
+      oscilloscopes: [[[8, 69], [13, 70], [12, 71]], [[18, 69], [13, 70], [14, 71]], [[19, 69], [13, 70], [23, 71]]],
+      oscilloscopesValues: ["43a", "43b", "43c"]
     },
     "4.4": {
       links: [[63, 64], [64, 65], [1, 24], [2, 29], [3, 34], [27, 40], [41, 44], [42, 45], [28, 46], [33, 48], [49, 52], [50, 53], [32, 54], [37, 56], [57, 60], [58, 61], [38, 62]],
       dmm: [],
       voltage: [],
+      jumpersVoltage: [],
+      currentDmm: [],
       current: [],
       jumper: null,
+      jumpers: [],
       shouldTestSequence: false,
       ground: [],
-      oscilloscopes: [],
-      oscilloscopesValues: []
+      oscilloscopes: [[[24, 69], [29, 70], [28, 71]], [[29, 69], [34, 70], [33, 71]], [[34, 69], [24, 70], [38, 71]]],
+      oscilloscopesValues: ["44a", "44b", "44c"]
     }
   },
   links: [],
@@ -295,10 +318,10 @@ const initialState = {
   output: "",
   openGraph: false,
   oscilloscopeGraph: "13a",
-  screenCapture: "",
-  openCapturedScreen: false,
   powerToggle: false,
-  switchToggle: false
+  switchToggle: false,
+  selectedJumpers: [],
+  sequence: null
 }
 const nodesReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -307,7 +330,7 @@ const nodesReducer = (state = initialState, action) => {
         ...state,
         selectedExercise: action.payload,
         powerToggle: false,
-        switchToggle: false
+        switchToggle: false,
       }
     case SELECT_NODE:
       const link = state.link
@@ -429,14 +452,20 @@ const nodesReducer = (state = initialState, action) => {
     case JUMPER_TOGGLE:
       state.jumpers[action.payload].isSelected = !state.jumpers[action.payload].isSelected
 
-      for (let i = 0; i < state.jumpers.length; i++) {
-        if (i !== action.payload) {
-          state.jumpers[i].isSelected = true
-        }
+      if (state.selectedJumpers.includes(action.payload)) {
+        state.selectedJumpers.splice(state.selectedJumpers.indexOf(action.payload), 1)
+      } else {
+        state.selectedJumpers.push(action.payload)
       }
+
+      state.selectedJumpers.sort(function(a, b) {
+        return a - b;
+      });
+
       return {
         ...state,
-        jumpers: [...state.jumpers]
+        jumpers: [...state.jumpers],
+        selectedJumpers: [...state.selectedJumpers]
       }
     case SELECT_METER_TYPE:
       let output = ""
@@ -452,6 +481,8 @@ const nodesReducer = (state = initialState, action) => {
 
       if (action.payload === "V") {
         output = Voltage(state)
+      } else {
+        output = Current(state)
       }
       return {
         ...state,
@@ -464,6 +495,7 @@ const nodesReducer = (state = initialState, action) => {
       let connections = [...state.oscilloscopeConnections].map(String)
       let openGraph = false
       let oscilloscopeGraph = state.oscilloscopeGraph
+      let diff = jackDiff(state)
 
       // check power and switch
       if (!state.powerToggle || !state.switchToggle) {
@@ -490,13 +522,25 @@ const nodesReducer = (state = initialState, action) => {
         }
       }
 
-      if (jackDiff(state).length !== 0) {
+      if (diff.length !== 0) {
         openGraph = false
       }
+
+      if (exercise.shouldTestSequence) {
+        if (diff.length === 0 || (diff.length === 1 && diff.includes(exercise.ground.toString()))) {
+          state.sequence = true
+        } else {
+          state.sequence = false
+        }
+      } else {
+        state.sequence = null
+      }
+
       return {
         ...state,
         openGraph: openGraph,
-        oscilloscopeGraph: oscilloscopeGraph
+        oscilloscopeGraph: oscilloscopeGraph,
+        sequence: state.sequence
       }
     case CLOSE_OSCILLOSCOPE:
       return {
@@ -534,15 +578,55 @@ const nodesReducer = (state = initialState, action) => {
 const Voltage = (state) => {
   let exercise = state.exercises[state.selectedExercise]
   let dmm = exercise.dmm.map(String)
+  let dmmIndex = dmm.indexOf(state.dmm.toString())
   let diff = jackDiff(state)
   let error = "Error"
   let voltage = null
-  if (diff.length === 0 || (diff.length === 1 && diff.includes(exercise.ground.toString()))) {
-    voltage = exercise.voltage[dmm.indexOf(state.dmm.toString(0))]
-    return voltage ? voltage : error
+  let jumpersVoltage = []
+
+  if (dmmIndex === -1) {
+    return error
   }
 
-  return error
+  if (diff.length === 0 || (diff.length === 1 && diff.includes(exercise.ground.toString()))) {
+    voltage = exercise.voltage[dmmIndex]
+  }
+
+  if (exercise.jumpersVoltage.length > 0) {
+    jumpersVoltage = exercise.jumpersVoltage[dmmIndex]
+    if (jumpersVoltage.toString() !== state.selectedJumpers.toString()) {
+      return error
+    }
+  }
+
+  return voltage ? voltage : error
+}
+
+const Current = (state) => {
+  let exercise = state.exercises[state.selectedExercise]
+  let currentDmm = exercise.currentDmm.map(String)
+  let dmmIndex = currentDmm.indexOf(state.dmm.toString())
+  let diff = jackDiff(state)
+  let error = "Error"
+  let current = null
+  let jumpersCurrent = []
+
+  if (dmmIndex === -1) {
+    return error
+  }
+
+  if (diff.length === 0 || (diff.length === 1 && diff.includes(exercise.ground.toString()))) {
+    current = exercise.current[dmmIndex]
+  }
+
+  if (exercise.jumpersCurrent.length > 0) {
+    jumpersCurrent = exercise.jumpersCurrent[dmmIndex]
+    if (jumpersCurrent.toString() !== state.selectedJumpers.toString()) {
+      return error
+    }
+  }
+
+  return current ? current : error
 }
 
 const jackDiff = (state) => {

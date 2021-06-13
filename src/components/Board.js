@@ -19,22 +19,34 @@ import SelectOption from "../components/SelectOption";
 import board from "../images/board9.png"
 import studentPdf from "../pdfs/student.pdf";
 import faqPdf from "../pdfs/faq.pdf";
+import helpPdf from "../pdfs/help.pdf";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { ScreenCapture } from 'react-screen-capture';
 
-import lab13a from "../images/graph/1.3a.png"
-import lab13b from "../images/graph/1.3b.png"
-import lab13c from "../images/graph/1.3c.png"
-import lab14a from "../images/graph/1.4a.png"
-import lab14b from "../images/graph/1.4b.png"
-import lab14c from "../images/graph/1.4c.png"
-import lab14d from "../images/graph/1.4d.png"
-import lab41a from "../images/graph/4.1a.png"
-import lab41b from "../images/graph/4.1b.png"
-import lab41c from "../images/graph/4.1c.png"
+import lab13a from "../images/graph/13a.png"
+import lab13b from "../images/graph/13b.png"
+import lab13c from "../images/graph/13c.png"
+import lab14a from "../images/graph/14a.png"
+import lab14b from "../images/graph/14b.png"
+import lab14c from "../images/graph/14c.png"
+import lab14d from "../images/graph/14d.png"
+import lab41a from "../images/graph/41a.png"
+import lab41b from "../images/graph/41b.png"
+import lab41c from "../images/graph/41c.png"
+import lab42a from "../images/graph/42a.png"
+import lab42b from "../images/graph/42b.png"
+import lab42c from "../images/graph/42c.png"
+import lab43a from "../images/graph/43a.png"
+import lab43b from "../images/graph/43b.png"
+import lab43c from "../images/graph/43c.png"
+import lab44a from "../images/graph/44a.png"
+import lab44b from "../images/graph/44b.png"
+import lab44c from "../images/graph/44c.png"
 import psuOn from "../images/psuon.png"
 import psuOff from "../images/psuoff.png"
+import correctSequence from "../images/correctsequence.png"
+import incorrectSequence from "../images/incorrectsequence.png"
 
 var mainStyles = { position: "relative" };
 var svgStyles = { position: "absolute", top: 0, left: 0, right: 0, bottom: 0 };
@@ -56,6 +68,7 @@ function Map() {
   const screenCaptureSource = useSelector(state => state.nodes.screenCapture)
   const powerToggleSource = useSelector(state => state.nodes.powerToggle)
   const switchToggleSource = useSelector(state => state.nodes.switchToggle)
+  const sequence = useSelector(state => state.nodes.sequence)
   const dispatch = useDispatch();
   const disabledOpacity = "50%";
   const inputNameStyle = {
@@ -120,6 +133,33 @@ function Map() {
     case "41c":
       graphImage = lab41c
       break
+    case "42a":
+      graphImage = lab42a
+      break
+    case "42b":
+      graphImage = lab42b
+      break
+    case "42c":
+      graphImage = lab42c
+      break
+    case "43a":
+      graphImage = lab43a
+      break
+    case "43b":
+      graphImage = lab43b
+      break
+    case "43c":
+      graphImage = lab43c
+      break
+    case "44a":
+      graphImage = lab44a
+      break
+    case "44b":
+      graphImage = lab44b
+      break
+    case "44c":
+      graphImage = lab44c
+      break
     default:
       graphImage = lab13a
   }
@@ -127,6 +167,20 @@ function Map() {
   let psuStatus = psuOff
   if (powerToggleSource) {
     psuStatus = psuOn
+  }
+
+  let setCorrectSequence = null
+  let setIncorrectSequence = null
+  switch (sequence) {
+    case true:
+      setCorrectSequence = correctSequence
+      break
+    case false:
+      setIncorrectSequence = incorrectSequence
+      break
+    default:
+      setCorrectSequence = null
+      setIncorrectSequence = null
   }
 
   const handleScreenCapture = screenCapture => {
@@ -146,6 +200,28 @@ function Map() {
             viewBox={`0 0 ${width} ${height}`}
             preserveAspectRatio="xMidYMid meet"
           >
+            <foreignObject 
+              x={xScale(11.2)}
+              y={yScale(56.3)}
+              height="130"
+              width="150">
+              <img src={setCorrectSequence} alt="" style={psuStyle} />
+            </foreignObject>
+            <foreignObject 
+              x={xScale(2.3)}
+              y={yScale(57.6)}
+              height="92"
+              width="150">
+              <img src={setIncorrectSequence} alt="" style={psuStyle} />
+            </foreignObject>
+            <rect
+              x={xScale(7.7)}
+              y={yScale(60.2)}
+              width="23" 
+              height="23" 
+              rx="10"
+              opacity="0%"
+            />
             {lines.map((line, i) => (
               <line
                 key={i}
@@ -177,8 +253,8 @@ function Map() {
                 cx={xScale(jumper.x)}
                 cy={yScale(jumper.y)}
                 r="7"
-                id={jumper.id}
-                isSelected={jumper.isSelected}
+                id={jumper.index}
+                isSelected={!jumper.isSelected}
                 action={jumperToggle}
               />
             ))}
@@ -230,6 +306,13 @@ function Map() {
               <a href={faqPdf} download style={linkStyle}> </a>
             </foreignObject>
             <foreignObject 
+              x={xScale(-106)}
+              y={yScale(47.3)}
+              height="160"
+              width="750">
+              <a href={helpPdf} download style={linkStyle}> </a>
+            </foreignObject>
+            <foreignObject 
               x={xScale(-130)}
               y={yScale(20.43)}
               height="321"
@@ -270,7 +353,7 @@ function Map() {
               height="53" 
               rx="10"
               opacity="0%"
-              onClick={onStartCapture}
+              //onClick={onStartCapture}
             />
             <rect
               x={xScale(-132)}
@@ -280,15 +363,6 @@ function Map() {
               rx="25"
               opacity={wireType === "B" ? "0%" : disabledOpacity}
               onClick={() => dispatch(selectConnectionType("B"))}
-            />
-            <rect
-              x={xScale(-106)}
-              y={yScale(47.3)}
-              width="160" 
-              height="191" 
-              rx="25"
-              opacity={wireType === "J" ? "0%" : disabledOpacity}
-              onClick={() => dispatch(selectConnectionType("J"))}
             />
             <rect
               x={xScale(-129.9)}

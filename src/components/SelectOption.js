@@ -27,8 +27,7 @@ function SelectOption() {
     {
       label: "Lab #3: Condition of Symmetry and Balance",
       options: [
-        { label: "Exercise #1: Connecting an unbalanced resistive load", value: "3.1" },
-        { label: "Exercise #2: Connection with three-phase and single-phase loads", value: "3.2" }
+        { label: "Exercise #1: Connecting an unbalanced resistive load", value: "3.1" }
       ]
     },
     {
