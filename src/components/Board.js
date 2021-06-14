@@ -82,8 +82,7 @@ function Map() {
     width: "100%",
     background: "#FFF",
     fontSize: "24px",
-    textAlign: "center",
-    marginTop: "18px"
+    textAlign: "center"
   }
   const linkStyle = {
     display: "block",
@@ -278,44 +277,44 @@ function Map() {
               <SelectOption />
             </foreignObject>
             <foreignObject 
-              x={xScale(-131)}
-              y={yScale(12.8)}
-              height="64"
+              x={xScale(-131.7)}
+              y={yScale(12.9)}
+              height="63"
               width="728">
                 <input type="text" style={inputNameStyle} /> 
             </foreignObject>
             <foreignObject 
-              x={xScale(-125.7)}
-              y={yScale(69.3)}
-              height="71"
+              x={xScale(-126.4)}
+              y={yScale(69.7)}
+              height="70.7"
               width="195">
               <label style={outputStyle}>{output}</label>
             </foreignObject>
             <foreignObject 
-              x={xScale(-80)}
-              y={yScale(47.8)}
+              x={xScale(-80.6)}
+              y={yScale(48)}
               height="125"
               width="165">
               <a href={studentPdf} download style={linkStyle}> </a>
             </foreignObject>
             <foreignObject 
-              x={xScale(-52.5)}
-              y={yScale(47.8)}
+              x={xScale(-53)}
+              y={yScale(48)}
               height="125"
               width="165">
               <a href={faqPdf} download style={linkStyle}> </a>
             </foreignObject>
             <foreignObject 
-              x={xScale(-105.5)}
-              y={yScale(47.3)}
+              x={xScale(-106)}
+              y={yScale(47.5)}
               height="187"
               width="156">
               <a href={helpPdf} download style={linkStyle}> </a>
             </foreignObject>
             <foreignObject 
-              x={xScale(-130)}
-              y={yScale(20.43)}
-              height="321"
+              x={xScale(-130.7)}
+              y={yScale(20.63)}
+              height="321.4"
               width="750">
               <img src={psuStatus} alt="" style={psuStyle} />
             </foreignObject>
@@ -356,8 +355,8 @@ function Map() {
               //onClick={onStartCapture}
             />
             <rect
-              x={xScale(-132)}
-              y={yScale(47.3)}
+              x={xScale(-132.4)}
+              y={yScale(47.7)}
               width="160" 
               height="194" 
               rx="25"
@@ -365,8 +364,8 @@ function Map() {
               onClick={() => dispatch(selectConnectionType("B"))}
             />
             <rect
-              x={xScale(-129.9)}
-              y={yScale(66.8)}
+              x={xScale(-130.4)}
+              y={yScale(67.2)}
               width="247" 
               height="422" 
               rx="7"
@@ -375,7 +374,7 @@ function Map() {
             />
             <rect
               x={xScale(-92.5)}
-              y={yScale(80.3)}
+              y={yScale(80.9)}
               width="126" 
               height="90" 
               rx="15"
@@ -384,7 +383,7 @@ function Map() {
             />
             <rect
               x={xScale(-92.5)}
-              y={yScale(88)}
+              y={yScale(88.5)}
               width="126" 
               height="90" 
               rx="15"
