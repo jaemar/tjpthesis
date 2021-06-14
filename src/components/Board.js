@@ -50,7 +50,7 @@ import incorrectSequence from "../images/incorrectsequence.png"
 
 var mainStyles = { position: "relative" };
 var svgStyles = { position: "absolute", top: 0, left: 0, right: 0, bottom: 0 };
-var boardStyles = { width: "100%" };
+var boardStyles = { width: "100%", display: "block" };
 var width = 666
 var height = 1340
 
