@@ -6,7 +6,6 @@ import "./styles.css";
 import Map from "./components/Board"
 import allReducers from "./reducers";
 import { Provider } from 'react-redux';
-import { Helmet } from "react-helmet";
 
 const store = createStore(
   allReducers,
@@ -18,12 +17,13 @@ const TITLE = 'BLP Trainer'
 //var links = [{ s: 0, d: 1 }, { s: 1, d: 2 }, { s: 2, d: 3 }, { s: 3, d: 4 }];
 
 class App extends Component {
+  componentDidMount(){
+    document.title = TITLE
+  }
+
   render() {
     return (
       <div className="App">
-        <Helmet>
-          <title>{ TITLE }</title>
-        </Helmet>
         <Map width={666} height={1340} />
       </div>
     );

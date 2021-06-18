@@ -138,7 +138,7 @@ const initialState = {
     "1.1": {
       links: [[63, 64], [64, 65]],
       dmm: [[1, 2], [2, 3], [3, 1], [2, 1], [3, 2], [1, 3], [1, 4], [2, 4], [3, 4], [4, 1], [4, 2], [4, 3]],
-      voltage: [24, 24, 24, -24, -24, -24, 13.8564, 13.8564, 13.8564, -13.8564, -13.8564, -13.8564],
+      voltage: [24, 24, 24, 24, 24, 24, 13.8564, 13.8564, 13.8564, 13.8564, 13.8564, 13.8564],
       jumpersVoltage: [],
       currentDmm: [],
       current: [],
@@ -151,7 +151,7 @@ const initialState = {
     "1.2": {
       links: [[63, 66], [64, 67], [65, 68]],
       dmm: [[1, 2], [2, 3], [3, 1], [2, 1], [3, 2], [1, 3]],
-      voltage: [24, 24, 24, -24, -24, -24],
+      voltage: [24, 24, 24, 24, 24, 24],
       jumpersVoltage: [],
       currentDmm: [],
       current: [],
@@ -190,7 +190,7 @@ const initialState = {
     "2.1": {
       links: [[63, 64], [64, 65], [1, 8], [2, 18], [3, 19], [9, 39], [10, 43], [16, 47], [17, 51], [20, 59], [21, 55]],
       dmm: [[1, 2], [2, 3], [3, 1], [2, 1], [3, 2], [1, 3], [1, 4], [2, 4], [3, 4], [4, 1], [4, 2], [4, 3]],
-      voltage: [24, 24, 24, -24, -24, -24, 13.8564, 13.8564, 13.8564, -13.8564, -13.8564, -13.8564],
+      voltage: [24, 24, 24, 24, 24, 24, 13.8564, 13.8564, 13.8564, 13.8564, 13.8564, 13.8564],
       jumpersVoltage: [[0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2]],
       currentDmm: [[1, 8], [2, 18], [3, 19], [11, 12], [15, 14], [22, 23], [8, 1], [18, 2], [19, 3], [12, 11], [14, 15], [23, 22]],
       current: [0.05543, 0.05543, 0.05543, 0.05543, 0.05543, 0.05543, -0.05543, -0.05543, -0.05543, -0.05543, -0.05543, -0.05543],
@@ -203,7 +203,7 @@ const initialState = {
     "2.2": {
       links: [[63, 64], [64, 65], [1, 24], [2, 29], [3, 34], [27, 39], [40, 43], [28, 44], [32, 52], [48, 51], [33, 47], [38, 60], [56, 59], [37, 55]],
       dmm: [[1, 2], [2, 3], [3, 1], [2, 1], [3, 2], [1, 3]],
-      voltage: [24, 24, 24, -24, -24, -24],
+      voltage: [24, 24, 24, 24, 24, 24],
       jumpersVoltage: [[3, 4, 5], [3, 4, 5], [3, 4, 5], [3, 4, 5], [3, 4, 5], [3, 4, 5]],
       currentDmm: [[1, 24], [2, 29], [3, 34], [25, 26], [30, 31], [36, 35], [24, 1], [29, 2], [34, 3], [26, 25], [31, 30], [35,36]],
       current: [0.08313, 0.08313, 0.08313, 0.08313, 0.08313, 0.08313, -0.08313, -0.08313, -0.08313, -0.08313, -0.08313, -0.08313],
@@ -313,7 +313,7 @@ const initialState = {
   dmm: [],
   link: {from: null, to: null, type: null},
   isLinkStarted: false,
-  wireType: "B",
+  wireType: null,
   selectedExercise: "1.1",
   output: "",
   openGraph: false,
@@ -340,6 +340,10 @@ const nodesReducer = (state = initialState, action) => {
       let wireType = state.wireType
       let oscilloscopesEnabled = [...state.oscilloscopesEnabled]
       let oscilloscopeConnections = [...state.oscilloscopeConnections]
+
+      if (wireType === null) {
+        return {...state}
+      }
 
       if (state.oscilloscopesEnabled.includes(action.payload)) {
         return {...state}
@@ -506,6 +510,10 @@ const nodesReducer = (state = initialState, action) => {
         return {...state}
       }
 
+      if (diff.length === 0) {
+        openGraph = true
+      }
+
       for (let i = 0; i < exerciseOscilloscopes.length; i++) {
         let oscilloscopes = exerciseOscilloscopes[i]
         for (let x = 0; x < oscilloscopes.length; x++) {
@@ -522,12 +530,8 @@ const nodesReducer = (state = initialState, action) => {
         }
       }
 
-      if (diff.length !== 0) {
-        openGraph = false
-      }
-
       if (exercise.shouldTestSequence) {
-        if (diff.length === 0 || (diff.length === 1 && diff.includes(exercise.ground.toString()))) {
+        if (diff.length === 0) {
           state.sequence = true
         } else {
           state.sequence = false
@@ -558,7 +562,9 @@ const nodesReducer = (state = initialState, action) => {
       return {
         ...state,
         powerToggle: action.payload,
-        switchToggle: false
+        switchToggle: false,
+        sequence: null,
+        wireType: null
       }
     case SWITCH_TOGGLE:
       if (!state.powerToggle) {
@@ -567,7 +573,9 @@ const nodesReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        switchToggle: action.payload
+        switchToggle: action.payload,
+        sequence: null,
+        wireType: null
       }
     default:
       return {...state}
@@ -588,7 +596,7 @@ const Voltage = (state) => {
     return error
   }
 
-  if (diff.length === 0 || (diff.length === 1 && diff.includes(exercise.ground.toString()))) {
+  if (diff.length === 0) {
     voltage = exercise.voltage[dmmIndex]
   }
 
@@ -615,7 +623,7 @@ const Current = (state) => {
     return error
   }
 
-  if (diff.length === 0 || (diff.length === 1 && diff.includes(exercise.ground.toString()))) {
+  if (diff.length === 0) {
     current = exercise.current[dmmIndex]
   }
 
@@ -633,6 +641,11 @@ const jackDiff = (state) => {
   let exercise = state.exercises[state.selectedExercise]
   let exerciseLinks = exercise.links.map(String)
   let links = state.links.map(String)
-  return links.filter(link => !exerciseLinks.includes(link)).concat(exerciseLinks.filter(link => !links.includes(link)))
+  let diff = links.filter(link => !exerciseLinks.includes(link)).concat(exerciseLinks.filter(link => !links.includes(link)))
+  if (diff.length === 0 || (diff.length === 1 && diff.includes(exercise.ground.toString()))) {
+    return []
+  } else {
+    return diff
+  }
 }
 export default nodesReducer;

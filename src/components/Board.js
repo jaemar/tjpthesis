@@ -16,7 +16,7 @@ import {
 } from '../actions';
 import SelectOption from "../components/SelectOption";
 
-import board from "../images/board9.png"
+import board from "../images/board.png"
 import studentPdf from "../pdfs/student.pdf";
 import faqPdf from "../pdfs/faq.pdf";
 import helpPdf from "../pdfs/help.pdf";
@@ -295,21 +295,21 @@ function Map() {
               y={yScale(48)}
               height="125"
               width="165">
-              <a href={studentPdf} download style={linkStyle}> </a>
+              <a href={studentPdf} style={linkStyle} target="_blank" rel="noreferrer"> </a>
             </foreignObject>
             <foreignObject 
               x={xScale(-53)}
               y={yScale(48)}
               height="125"
               width="165">
-              <a href={faqPdf} download style={linkStyle}> </a>
+              <a href={faqPdf} style={linkStyle} target="_blank" rel="noreferrer"> </a>
             </foreignObject>
             <foreignObject 
               x={xScale(-106)}
               y={yScale(47.5)}
               height="187"
               width="156">
-              <a href={helpPdf} download style={linkStyle}> </a>
+              <a href={helpPdf} style={linkStyle} target="_blank" rel="noreferrer"> </a>
             </foreignObject>
             <foreignObject 
               x={xScale(-130.7)}
