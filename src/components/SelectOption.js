@@ -9,7 +9,7 @@ function SelectOption() {
     {
       label: "Lab #1: Three Phase Network",
       options: [
-        { label: "Lab #1 Exercise #1: Start connection of three phase power source", value: "1.1" },
+        { label: "Lab #1 Exercise #1: Star connection of three phase power source", value: "1.1" },
         { label: "Lab #1 Exercise #2: Delta connection of three phase power source", value: "1.2" },
         { label: "Lab #1 Exercise #3: Measuring the phase angle between the phases", value: "1.3" },
         { label: "Lab #1 Exercise #4: Phase sequence", value: "1.4" },
@@ -18,9 +18,9 @@ function SelectOption() {
     {
       label: "Lab #2: Three Phase Network Underload",
       options: [
-        { label: "Lab #2 Exercise #1: Star-connected three-phase source / start-connected resistive load", value: "2.1" },
+        { label: "Lab #2 Exercise #1: Star-connected three-phase source / star-connected resistive load", value: "2.1" },
         { label: "Lab #2 Exercise #2: Star-connected three-phase source / delta-connected resistive load", value: "2.2" },
-        { label: "Lab #2 Exercise #3: Delta-connected three-phase source / start-connected resistive load", value: "2.3" },
+        { label: "Lab #2 Exercise #3: Delta-connected three-phase source / star-connected resistive load", value: "2.3" },
         { label: "Lab #2 Exercise #4: Delta-connected three-phase source / delta-connected resistive load", value: "2.4" }
       ]
     },

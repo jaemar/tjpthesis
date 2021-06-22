@@ -321,9 +321,13 @@ const initialState = {
   powerToggle: false,
   switchToggle: false,
   selectedJumpers: [],
-  sequence: null
+  sequence: null,
+  sequences: [],
+  correctSequence: [[1, 5], [2, 6], [3, 7]]
 }
 const nodesReducer = (state = initialState, action) => {
+  let exercise = state.exercises[state.selectedExercise]
+
   switch (action.type) {
     case SELECT_EXERCISE:
       return {
@@ -378,6 +382,8 @@ const nodesReducer = (state = initialState, action) => {
             links = [...state.links, [link.from, link.to]]
           }
 
+          state.links = links
+
           if (state.dmm.length === 0 && wireType === "M") {
             lines.push(link)
             dmm = [link.from, link.to]
@@ -387,6 +393,16 @@ const nodesReducer = (state = initialState, action) => {
             oscilloscopeConnections = [...state.oscilloscopeConnections, [link.from , link.to]]
           }
 
+          if (exercise.shouldTestSequence) {
+            let diff = jackDiff(state)
+            if (diff.length === 0) {
+              state.sequence = true
+            } else {
+              state.sequence = false
+            }
+          } else {
+            state.sequence = null
+          }
 
           return {
             ...state,
@@ -396,7 +412,8 @@ const nodesReducer = (state = initialState, action) => {
             dmm: dmm,
             links: links,
             oscilloscopeConnections: oscilloscopeConnections,
-            oscilloscopesEnabled: oscilloscopesEnabled
+            oscilloscopesEnabled: oscilloscopesEnabled,
+            sequence: state.sequence
           }
         } else{
           link.from = action.payload
@@ -419,6 +436,7 @@ const nodesReducer = (state = initialState, action) => {
       let splicedLineIndex = null
       let oscilloscopesEnabledLines = [...state.oscilloscopesEnabled]
       let lineOpenGraph = state.openGraph
+
       if (splicedLine.type === "M") {
         dmmLine = []
       } else {
@@ -437,6 +455,17 @@ const nodesReducer = (state = initialState, action) => {
         } else {
           splicedLineIndex = state.links.map(String).indexOf([splicedLine.from, splicedLine.to].toString())
           state.links.splice(splicedLineIndex, 1)
+        }
+
+        if (exercise.shouldTestSequence) {
+          let diff = jackDiff(state)
+          if (diff.length === 0) {
+            state.sequence = true
+          } else {
+            state.sequence = false
+          }
+        } else {
+          state.sequence = null
         }
       }
       return {
@@ -493,7 +522,6 @@ const nodesReducer = (state = initialState, action) => {
         output: output
       }
     case OPEN_OSCILLOSCOPE:
-      let exercise = state.exercises[state.selectedExercise]
       let exerciseOscilloscopes = exercise.oscilloscopes
       let exerciseOscilloscopesValues = exercise.oscilloscopesValues
       let connections = [...state.oscilloscopeConnections].map(String)
@@ -510,10 +538,6 @@ const nodesReducer = (state = initialState, action) => {
         return {...state}
       }
 
-      if (diff.length === 0) {
-        openGraph = true
-      }
-
       for (let i = 0; i < exerciseOscilloscopes.length; i++) {
         let oscilloscopes = exerciseOscilloscopes[i]
         for (let x = 0; x < oscilloscopes.length; x++) {
@@ -528,6 +552,10 @@ const nodesReducer = (state = initialState, action) => {
         if (openGraph) {
           break
         }
+      }
+
+      if (diff.length > 0) {
+        openGraph = false
       }
 
       if (exercise.shouldTestSequence) {

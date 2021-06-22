@@ -213,14 +213,6 @@ function Map() {
               width="150">
               <img src={setIncorrectSequence} alt="" style={psuStyle} />
             </foreignObject>
-            <rect
-              x={xScale(7.7)}
-              y={yScale(60.2)}
-              width="23" 
-              height="23" 
-              rx="10"
-              opacity="0%"
-            />
             {lines.map((line, i) => (
               <line
                 key={i}
@@ -281,7 +273,7 @@ function Map() {
               y={yScale(12.9)}
               height="63"
               width="728">
-                <input type="text" style={inputNameStyle} /> 
+                <input type="text" style={inputNameStyle} placeholder="Type your name" /> 
             </foreignObject>
             <foreignObject 
               x={xScale(-126.4)}
