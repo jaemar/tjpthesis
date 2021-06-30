@@ -642,13 +642,20 @@ const Current = (state) => {
   let exercise = state.exercises[state.selectedExercise]
   let currentDmm = exercise.currentDmm.map(String)
   let dmmIndex = currentDmm.indexOf(state.dmm.toString())
-  let diff = jackDiff(state)
+  let diff = null
   let error = "Error"
   let current = null
   let jumpersCurrent = []
 
   if (dmmIndex === -1) {
     return error
+  }
+  if (["1,8", "2,18", "3,19"].includes(state.dmm.toString())) {
+    state.links.push(state.dmm)
+  }
+  diff = jackDiff(state)
+  if (["1,8", "2,18", "3,19"].includes(state.dmm.toString())) {
+    state.links.splice(state.links.map(String).indexOf(state.dmm.toString()))
   }
 
   if (diff.length === 0) {
