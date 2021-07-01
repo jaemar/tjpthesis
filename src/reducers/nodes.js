@@ -646,15 +646,16 @@ const Current = (state) => {
   let error = "Error"
   let current = null
   let jumpersCurrent = []
+  let dmms = ["1,8", "2,18", "3,19", "1,24", "2,29", "3,34"]
 
   if (dmmIndex === -1) {
     return error
   }
-  if (["1,8", "2,18", "3,19"].includes(state.dmm.toString())) {
+  if (dmms.includes(state.dmm.toString())) {
     state.links.push(state.dmm)
   }
   diff = jackDiff(state)
-  if (["1,8", "2,18", "3,19"].includes(state.dmm.toString())) {
+  if (dmms.includes(state.dmm.toString())) {
     state.links.splice(state.links.map(String).indexOf(state.dmm.toString()))
   }
 
